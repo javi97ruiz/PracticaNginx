@@ -1,0 +1,36 @@
+services:
+  javier_web:
+    image: ubuntu/nginx # imagen de Nginx
+    container_name: nginxJavi_server # nombre del contenedor
+    ports:
+      - "8081:80" # mapeo de puertos  HTTP
+    volumes:
+      - ./javi_website/sites-available:/etc/nginx/sites-available # archivos de configuración de hosts virtuales
+      - ./javi_website/websites:/var/www/html/ # directorio de los sitios web
+      - ./javi_website/scripts:/docker-entrypoint.d/ # directorio de scripts
+    restart: always # reinicio automático
+
+  serrano_web:
+    image: ubuntu/nginx # imagen de Nginx
+    container_name: nginxSerrano_server # nombre del contenedor
+    ports:
+      - "8082:80" # mapeo de puertos  HTTP
+    volumes:
+      - ./serrano_website/sites-available:/etc/nginx/sites-available # archivos de configuración de hosts virtuales
+      - ./serrano_website/websites:/var/www/html/ # directorio de los sitios web
+      - ./serrano_website/scripts:/docker-entrypoint.d/ # directorio de scripts
+    restart: always # reinicio automático
+
+  javiserrano_web:
+    image: ubuntu/nginx # imagen de Apache
+    container_name: nginxJaviSerrano_server # nombre del contenedor
+    ports:
+      - "8083:80" # mapeo de puertos  HTTP
+      - "443:443" # mapeo de puertos HTTPS (solo si es necesario)
+    volumes:
+      - ./javiserrano_website/sites-available:/etc/nginx/sites-available # archivos de configuración de hosts virtuales
+      - ./javiserrano_website/websites:/var/www/html/ # directorio de los sitios web
+      - ./javiserrano_website/scripts:/docker-entrypoint.d/ # directorio de scripts
+      - ./javiserrano_website/htpasswd/.htpasswd:/etc/nginx/.htpasswd # archivo de contraseñas
+      - ./javiserrano_website/certs:/etc/nginx/certs # directorio de certificados (hechos con openssl)
+    restart: always # reinicio automático
